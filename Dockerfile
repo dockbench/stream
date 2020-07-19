@@ -6,15 +6,12 @@ RUN echo build $base_image
 RUN apk add --no-cache wget
 RUN wget https://www.cs.virginia.edu/stream/FTP/Code/stream.c -q -P .
 
-FROM ubuntu:18.04
+FROM alpine:3.10.1
 
 WORKDIR /dockbench/stream/
 COPY --from=donwloader /stream /dockbench/stream
 
-RUN apt-get update -y \
-    && apt-get install -y gcc \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache gcc
 
 COPY ./docker-entrypoint.sh /
 ENTRYPOINT ["/docker-entrypoint.sh"]
